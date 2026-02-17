@@ -169,6 +169,154 @@
             text-align: right;
         }
         
+        .sources-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .sources-button:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 50px auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        
+        .close {
+            color: white;
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .close:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+        
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(85vh - 100px);
+        }
+        
+        .modal-body h2 {
+            color: #667eea;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .modal-body h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .modal-body p, .modal-body li {
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .modal-body ul {
+            margin-left: 20px;
+        }
+        
+        .modal-body code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .modal-body pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .verified {
+            color: #28a745;
+            font-weight: 600;
+        }
+        
+        .needs-verification {
+            color: #ffc107;
+            font-weight: 600;
+        }
+        
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em;
@@ -185,6 +333,20 @@
     </style>
 </head>
 <body>
+    <button class="sources-button" onclick="openModal()">📚 Ver Fuentes</button>
+    
+    <div id="sourcesModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Fuentes y Metodología</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be loaded here -->
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <header>
             <h1>💰 Costo Software Hospital de Ñuble</h1>
@@ -280,6 +442,186 @@ Costo Salud per cápita,"$11,205",1320959,pacientes`;
         }
 
         createComparisonCards();
+        
+        // Modal functions
+        function openModal() {
+            document.getElementById('sourcesModal').style.display = 'block';
+            loadSourcesContent();
+        }
+        
+        function closeModal() {
+            document.getElementById('sourcesModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('sourcesModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        // Close with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        function loadSourcesContent() {
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <h2>Fuente Principal</h2>
+                <p><strong>Licitación ID: 1057898-8-LR26</strong></p>
+                <ul>
+                    <li><strong>Título:</strong> "Adquisición de Softwares para el Nuevo Hospital Regional de Ñuble"</li>
+                    <li><strong>Organismo:</strong> Servicio de Salud Ñuble</li>
+                    <li><strong>Portal:</strong> Mercado Público (Chile)</li>
+                    <li><strong>Monto estimado:</strong> $14.801.350.000 CLP</li>
+                    <li><strong>Fecha de publicación:</strong> 29/01/2026</li>
+                    <li><strong>Fecha de cierre:</strong> 12/03/2026</li>
+                </ul>
+                
+                <h2>Fuentes de Datos Comparativos</h2>
+                
+                <h3>1. CESFAM (Centros de Salud Familiar)</h3>
+                <p><strong>Cifras utilizadas:</strong> CESFAM Grande ($9.800.000.000) y CESFAM Standard ($6.400.000.000)</p>
+                <p><strong>Fuentes sugeridas para verificación:</strong></p>
+                <ul>
+                    <li>Presupuestos del Ministerio de Salud de Chile (MINSAL)</li>
+                    <li>Licitaciones de construcción de CESFAM en portal Mercado Público</li>
+                    <li>Estudios de costos de infraestructura sanitaria del Departamento de Inversiones del MINSAL</li>
+                </ul>
+                
+                <h3>2. Costo de Cirugías</h3>
+                <p><strong>Cifra utilizada:</strong> $1.450.000 CLP por cirugía</p>
+                <p><strong>Fuentes recomendadas:</strong></p>
+                <ul>
+                    <li>Aranceles FONASA para procedimientos quirúrgicos</li>
+                    <li>Costos promedio publicados por MINSAL</li>
+                    <li>Estudios de costos hospitalarios del DEIS</li>
+                </ul>
+                
+                <h3>3. Déficit de Salud en Tarapacá</h3>
+                <p><strong>Cifra utilizada:</strong> $14.000.000.000 CLP</p>
+                <p><strong>Fuentes recomendadas:</strong></p>
+                <ul>
+                    <li>Informes de déficit presupuestario del Servicio de Salud Tarapacá</li>
+                    <li>Cuenta Pública del MINSAL</li>
+                    <li>Informes de la Contraloría General de la República</li>
+                </ul>
+                
+                <h3>4. Máquinas de Resonancia Magnética (MRI)</h3>
+                <p><strong>Cifra utilizada:</strong> $1.500.000.000 CLP por equipo</p>
+                <p><strong>Fuentes sugeridas:</strong></p>
+                <ul>
+                    <li>Licitaciones de equipamiento médico en portal Mercado Público</li>
+                    <li>Precio de referencia de equipos Siemens, GE Healthcare, Philips</li>
+                    <li>Estudios de costos de tecnología médica del MINSAL</li>
+                </ul>
+                
+                <h3>5. Costo Salud per Cápita</h3>
+                <p><strong>Cifra utilizada:</strong> $11.205 CLP</p>
+                <p><strong>Fuentes recomendadas:</strong></p>
+                <ul>
+                    <li>FONASA: Costo promedio de atención ambulatoria per cápita</li>
+                    <li>MINSAL: Estadísticas de gasto en salud por beneficiario</li>
+                    <li>Superintendencia de Salud: Informes de costos de prestaciones</li>
+                </ul>
+                
+                <h2>Precedentes Internacionales</h2>
+                
+                <h3>1. UK NHS National Programme for IT</h3>
+                <p><strong>Fuentes:</strong></p>
+                <ul>
+                    <li>National Audit Office (NAO). (2011). "The National Programme for IT in the NHS"</li>
+                    <li>House of Commons Committee of Public Accounts (2011)</li>
+                    <li>Monto: £10.000 millones</li>
+                    <li>Resultado: Proyecto cancelado en 2011</li>
+                </ul>
+                
+                <h3>2. Queensland Health Payroll System (Australia)</h3>
+                <p><strong>Fuentes:</strong></p>
+                <ul>
+                    <li>Queensland Audit Office reports</li>
+                    <li>Queensland Government Commission of Inquiry (2013)</li>
+                    <li>Sobrecosto: AU$1.200 millones</li>
+                </ul>
+                
+                <h3>3. Epic Systems Implementation</h3>
+                <p><strong>Fuentes:</strong></p>
+                <ul>
+                    <li>KLAS Research: Informes de costos de implementación de EMR</li>
+                    <li>HIMSS Analytics: Estudios de costos de sistemas hospitalarios</li>
+                    <li>Sobrecostos estimados: 30-50%</li>
+                </ul>
+                
+                <h2>Metodología de Cálculo</h2>
+                
+                <h3>Cálculo de "Total Posible"</h3>
+                <p>Representa cuántas unidades de cada alternativa se podrían financiar:</p>
+                <pre>Total Posible = $14.801.350.000 / Costo de Item</pre>
+                
+                <p><strong>Ejemplos:</strong></p>
+                <ul>
+                    <li>CESFAM Grande: $14.801.350.000 / $9.800.000.000 = 1,5 centros</li>
+                    <li>Cirugías: $14.801.350.000 / $1.450.000 = 10.208 cirugías</li>
+                    <li>MRI: $14.801.350.000 / $1.500.000.000 = 10 máquinas</li>
+                </ul>
+                
+                <h3>Cálculo de Porcentajes</h3>
+                <p><strong>Costo unitario (%):</strong></p>
+                <pre>(Costo Unitario / $14.801.350.000) × 100</pre>
+                
+                <p><strong>Costo total (%):</strong></p>
+                <pre>(Costo Unitario × Cantidad / $14.801.350.000) × 100</pre>
+                
+                <div class="warning-box">
+                    <p><strong>⚠️ IMPORTANTE:</strong> Muchas cifras comparativas requieren verificación contra fuentes oficiales antes de publicación periodística.</p>
+                </div>
+                
+                <h2>Estado de Verificación</h2>
+                <ul>
+                    <li><span class="verified">✅ Verificado:</span> Monto y datos de la licitación (fuente: Mercado Público)</li>
+                    <li><span class="needs-verification">⚠️ Requiere verificación:</span> Costo de CESFAM Grande y Standard</li>
+                    <li><span class="needs-verification">⚠️ Requiere verificación:</span> Costo promedio de cirugías</li>
+                    <li><span class="needs-verification">⚠️ Requiere verificación:</span> Déficit de Salud en Tarapacá</li>
+                    <li><span class="needs-verification">⚠️ Requiere verificación:</span> Costo de equipos MRI</li>
+                    <li><span class="needs-verification">⚠️ Requiere verificación:</span> Costo per cápita de atención</li>
+                </ul>
+                
+                <h2>Recomendaciones para Verificación</h2>
+                
+                <h3>Contactar directamente:</h3>
+                <ul>
+                    <li>Departamento de Prensa MINSAL</li>
+                    <li>Departamento de Inversiones MINSAL</li>
+                    <li>Servicio de Salud Ñuble</li>
+                    <li>Servicio de Salud Tarapacá</li>
+                </ul>
+                
+                <h3>Solicitar por Ley de Transparencia:</h3>
+                <ul>
+                    <li>Costos de construcción de CESFAM (últimos 5 años)</li>
+                    <li>Costos de adquisición de equipamiento médico mayor</li>
+                    <li>Presupuestos de déficit por servicio de salud</li>
+                </ul>
+                
+                <h2>Estándares Técnicos Mencionados</h2>
+                
+                <h3>HL7 FHIR</h3>
+                <p>Fast Healthcare Interoperability Resources - Estándar de interoperabilidad para intercambio de datos de salud</p>
+                <p><strong>Website:</strong> <a href="https://www.hl7.org/fhir/" target="_blank">https://www.hl7.org/fhir/</a></p>
+                
+                <h3>DICOM</h3>
+                <p>Digital Imaging and Communications in Medicine - Estándar para manejo de imágenes médicas</p>
+                <p><strong>Website:</strong> <a href="https://www.dicomstandard.org/" target="_blank">https://www.dicomstandard.org/</a></p>
+                
+                <p style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; color: #666;">
+                    <strong>Última actualización:</strong> Febrero 2026 | <strong>Versión:</strong> 1.0
+                </p>
+            `;
+        }
     </script>
 </body>
 </html>
